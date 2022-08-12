@@ -67,3 +67,37 @@ CREATE TABLE rental (
   staff_id smallint NOT NULL,
   last_update timestamp without time zone DEFAULT now() NOT NULL
 );
+
+-- Titles of all films rented out by Jon Stephens
+
+SELECT title
+FROM film
+WHERE film_id IN
+   (SELECT film_id
+   FROM inventory
+   WHERE inventory_id IN
+      (SELECT inventory_id
+      FROM rental
+      WHERE rental_id IN
+         (SELECT rental_id
+         FROM payment
+         WHERE staff_id IN
+            (SELECT staff_id
+            FROM staff
+            WHERE first_name = 'Jon' AND last_name = 'Stephens'))))
+            
+-- Total rental amount paid for "ACE GOLDFINGER"
+
+SELECT SUM(amount)
+FROM payment
+WHERE rental_id IN
+   (
+   SELECT rental_id
+   FROM rental
+   WHERE inventory_id IN
+      (SELECT inventory_id
+      FROM inventory
+      WHERE film_id IN
+         (SELECT film_id
+         FROM film
+         WHERE title = 'ACE GOLDFINGER')))

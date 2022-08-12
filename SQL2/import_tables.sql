@@ -6,4 +6,5 @@ CREATE TABLE actor
    last_update TIMESTAMP without time zone DEFAULT now() NOT NULL
 );
 
+SELECT * FROM actor
 
