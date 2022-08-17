@@ -1,20 +1,22 @@
 -- Drop tables
 DROP TABLE IF EXISTS agents CASCADE;
 DROP TABLE IF EXISTS regions CASCADE;
-DROP TABLE IF EXISTS agent_region_junction CASCADE;
 
--- Create a table of students
+
+-- Create a table of agents
 CREATE TABLE agents (
     agent_id INT PRIMARY KEY
   , first_name VARCHAR NOT NULL
   , last_name VARCHAR NOT NULL
 );
 
--- Create a table of courses
+-- Create a table of regions
 CREATE TABLE regions(
     region_id INT NOT NULL PRIMARY KEY
   , region_name VARCHAR NOT NULL
 );
+
+DROP TABLE IF EXISTS agent_region_junction CASCADE;
 
 -- Create a junction table.
 CREATE TABLE agent_region_junction(
@@ -28,6 +30,7 @@ CREATE TABLE agent_region_junction(
 SELECT * FROM agent_region_junction
 
 SELECT *
-FROM agents a
-LEFT JOIN agent_region_junction b ON a.agent_id = b.agent_id
-LEFT JOIN regions c ON b.region_id = c.region_id;
+FROM agents 
+LEFT JOIN agent_region_junction  ON agents.agent_id = agent_region_junction.agent_id
+LEFT JOIN regions  ON agent_region_junction.region_id = regions.region_id;
+
